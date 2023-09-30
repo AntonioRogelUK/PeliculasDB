@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,40 @@ namespace PeliculasDB
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView1.DataSource = null;
+                string connectionstring = 
+                    "Server=localhost;" +
+                    "Database=PruebaDB;" +
+                    "Trusted_Connection=True;" +
+                    "TrustServerCertificate=true;";
+
+                SqlConnection conn = new SqlConnection(connectionstring);
+
+                string query = "SELECT TOP (1000) [Id],[Nombre],[Email],[Password],[NombreUsuario] FROM [PruebaDB].[dbo].[Usuarios]";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.Text;
+
+                conn.Open();
+
+                DataTable data = new DataTable();
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(data);
+                conn.Close();
+
+                dataGridView1.DataSource = data;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
