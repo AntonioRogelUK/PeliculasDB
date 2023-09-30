@@ -51,5 +51,33 @@ namespace PeliculasDB
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string connectionstring =
+                    "Server=localhost;" +
+                    "Database=PruebaDB;" +
+                    "Trusted_Connection=True;" +
+                    "TrustServerCertificate=true;";
+
+                SqlConnection conn = new SqlConnection(connectionstring);
+
+                string query = $"UPDATE Usuarios SET Nombre = '{txtNombre.Text}' WHERE Id=2";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.Text;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+ 
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
